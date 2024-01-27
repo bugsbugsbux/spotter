@@ -10,11 +10,11 @@ local M = {
 local HLGRP_DIM = 'Comment'
 local HLGRP_MARK = 'Search'
 
-local function inject_on_activation()
+local function inject_on_show(opts)
     vim.wo.cursorline = false
     vim.o.cursorcolumn = true
 end
-local function inject_on_deactivation()
+local function inject_on_hide(opts)
     vim.o.cursorline = true
     vim.o.cursorcolumn = false
 end
@@ -61,7 +61,7 @@ function M.activate(opts)
         end
     end
 
-    inject_on_activation()
+    inject_on_show(opts)
     dim_line(linenr-1)
 
     local positions
@@ -77,8 +77,9 @@ function M.activate(opts)
     end
 end
 
-function M.deactivate()
-    inject_on_deactivation()
+function M.deactivate(opts)
+    opts = opts or {}
+    inject_on_hide(opts)
     --- buf, ns, 0based_startline, 0based_endline_or_neg1
     vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
 end
