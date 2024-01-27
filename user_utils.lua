@@ -6,12 +6,12 @@ local M = {
 }
 
 ---Stop showing targets for f/t/F/T when cursor moves/buffer is left.
-function M.hide_on_move()
+function M.hide_on_move(opts)
     vim.api.nvim_create_autocmd({'CursorMoved', 'BufLeave'}, {
         group = augroup,
         once = true,
         callback = function()
-            core.deactivate()
+            core.deactivate(opts)
         end,
     })
 end
@@ -33,7 +33,7 @@ function M.hide_on_expire(opts)
     local buf = vim.api.nvim_get_current_buf()
     local function hide()
         if vim.api.nvim_buf_is_loaded(buf) then
-            vim.api.nvim_buf_call(buf, core.deactivate)
+            vim.api.nvim_buf_call(buf, function() core.deactivate(opts) end)
         end
     end
 
@@ -59,7 +59,7 @@ function M.show(opts)
     opts = opts or {}
 
     if opts.toggle and core.is_active() then
-        core.deactivate()
+        core.deactivate(opts)
         return
     end
 
@@ -73,7 +73,7 @@ function M.show(opts)
     if opts.hide_on_move == false then
         return
     end
-    M.hide_on_move()
+    M.hide_on_move(opts)
 end
 
 function M.enable_default_maps()
