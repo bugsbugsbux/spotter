@@ -3,24 +3,6 @@ local M = {
     ns = vim.deepcopy(ns),
 }
 
------------------------------------------------------
--- move this to config:
------------------------------------------------------
-
-local HLGRP_DIM = 'Comment'
-local HLGRP_MARK = 'Search'
-
-local function inject_on_show(opts)
-    vim.wo.cursorline = false
-    vim.o.cursorcolumn = true
-end
-local function inject_on_hide(opts)
-    vim.o.cursorline = true
-    vim.o.cursorcolumn = false
-end
-
------------------------------------------------------
-
 ---@return boolean
 function M.is_active()
     return 1 == #vim.api.nvim_buf_get_extmarks(0, ns, 0, -1, {limit=1})
@@ -28,13 +10,15 @@ end
 
 ---@param row number First line is row 0
 local function dim_line(row)
-    vim.api.nvim_buf_add_highlight(0, ns, HLGRP_DIM, row, 0, -1)
+    local color = require('spotter.config').get('color_dim_line')
+    vim.api.nvim_buf_add_highlight(0, ns, color, row, 0, -1)
 end
 
 ---@param row number First line is row 0
 ---@param byte number Byte in line
 local function highlight_char(row, byte)
-    vim.api.nvim_buf_add_highlight(0, ns, HLGRP_MARK, row, byte, byte+1)
+    local color = require('spotter.config').get('color_targets')
+    vim.api.nvim_buf_add_highlight(0, ns, color, row, byte, byte+1)
 end
 
 function M.activate(opts)
@@ -42,6 +26,8 @@ function M.activate(opts)
     opts = vim.tbl_extend('keep', opts, {
         where = nil -- 'before' | 'after'
     })
+
+    local conf = require('spotter.config')
 
     -- returns linenr (starting with 1) and cursor byte position (start with 0)
     local linenr, cursor = unpack(vim.api.nvim_win_get_cursor(0))
@@ -61,7 +47,7 @@ function M.activate(opts)
         end
     end
 
-    inject_on_show(opts)
+    conf.get('inject_on_show')(opts)
     dim_line(linenr-1)
 
     local positions
@@ -79,7 +65,8 @@ end
 
 function M.deactivate(opts)
     opts = opts or {}
-    inject_on_hide(opts)
+    local conf = require('spotter.config')
+    conf.get('inject_on_hide')(opts)
     --- buf, ns, 0based_startline, 0based_endline_or_neg1
     vim.api.nvim_buf_clear_namespace(0, ns, 0, -1)
 end
