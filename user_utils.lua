@@ -76,4 +76,18 @@ function M.show(opts)
     M.hide_on_move()
 end
 
+function M.enable_default_maps()
+    vim.keymap.set({'n', 'v'}, 'f', "<cmd>lua require'spotter'.show{expire_ms=1, hide_on_move=true, where='after'}<cr>f", {remap=false})
+    vim.keymap.set({'n', 'v'}, 't', "<cmd>lua require'spotter'.show{expire_ms=1, hide_on_move=true, where='after'}<cr>t", {remap=false})
+    vim.keymap.set({'n', 'v'}, 'F', "<cmd>lua require'spotter'.show{expire_ms=1, hide_on_move=true, where='before'}<cr>F", {remap=false})
+    vim.keymap.set({'n', 'v'}, 'T', "<cmd>lua require'spotter'.show{expire_ms=1, hide_on_move=true, where='before'}<cr>T", {remap=false})
+end
+
+function M.disable_default_maps()
+    vim.keymap.del({'n', 'v'}, 'f')
+    vim.keymap.del({'n', 'v'}, 't')
+    vim.keymap.del({'n', 'v'}, 'F')
+    vim.keymap.del({'n', 'v'}, 'T')
+end
+
 return M
