@@ -1,7 +1,7 @@
 local M = {}
 
 local read_only_defaults = {
-    ns = vim.api.nvim_create_namespace('SpotterNvim'),
+    ns = vim.api.nvim_create_namespace('Spotter'),
     augroup = vim.api.nvim_create_augroup('SpotterClear', {clear=true}),
 }
 
