@@ -17,6 +17,7 @@ local defaults = vim.tbl_extend('error', read_only_defaults, {
     color_dim_line = 'Comment',
     color_targets = 'Search',
     use_default_maps = true,
+    dim_line = true,
 })
 
 ---Throws if invalid overrides are given.
@@ -43,6 +44,7 @@ local function validate(overrides, allow_readonly)
         color_dim_line = {overrides.color_dim_line, 'string', true},
         color_targets = {overrides.color_targets, 'string', true},
         use_default_maps = {overrides.use_default_maps, 'boolean', true},
+        dim_line = {overrides.dim_line, 'boolean', true},
     }
 end
 

@@ -48,7 +48,9 @@ function M.activate(opts)
     end
 
     conf.get('inject_on_show')(opts)
-    dim_line(linenr-1)
+    if conf.get('dim_line') then
+        dim_line(linenr-1)
+    end
 
     local positions
     if opts.where then
