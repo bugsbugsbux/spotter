@@ -70,4 +70,12 @@ require('spotter').setup{
     inject_on_show = function(opts) vim.wo.cursorline = false end,
     inject_on_hide = function(opts) vim.wo.cursorline = true end,
 }
+
+-- create a custom mapping
+vim.keymap.set( -- just show the targets for some seconds:
+    {'n', 'v'},
+    '<leader>g',
+    "<Cmd>lua require'spotter'.show{expire_ms=5000, hide_on_move=true, toggle=true}<CR>",
+    {remap=false}
+)
 ```
