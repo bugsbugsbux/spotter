@@ -77,17 +77,28 @@ function M.show(opts)
 end
 
 function M.enable_default_maps()
-    vim.keymap.set({'n', 'v'}, 'f', "<cmd>lua require'spotter'.show{expire_ms=1, hide_on_move=true, where='after'}<cr>f", {remap=false})
-    vim.keymap.set({'n', 'v'}, 't', "<cmd>lua require'spotter'.show{expire_ms=1, hide_on_move=true, where='after'}<cr>t", {remap=false})
-    vim.keymap.set({'n', 'v'}, 'F', "<cmd>lua require'spotter'.show{expire_ms=1, hide_on_move=true, where='before'}<cr>F", {remap=false})
-    vim.keymap.set({'n', 'v'}, 'T', "<cmd>lua require'spotter'.show{expire_ms=1, hide_on_move=true, where='before'}<cr>T", {remap=false})
+    local function make_action(char)
+        return function()
+            require('spotter').show{
+                expire_ms = 1,
+                hide_on_move = true,
+                where = (char == 'f' or char == 't') and 'after' or 'before',
+            }
+            return char
+        end
+    end
+    local o = {expr=true, noremap=true}
+    vim.keymap.set('', 'f', make_action('f'), o)
+    vim.keymap.set('', 't', make_action('t'), o)
+    vim.keymap.set('', 'F', make_action('F'), o)
+    vim.keymap.set('', 'T', make_action('T'), o)
 end
 
 function M.disable_default_maps()
-    vim.keymap.del({'n', 'v'}, 'f')
-    vim.keymap.del({'n', 'v'}, 't')
-    vim.keymap.del({'n', 'v'}, 'F')
-    vim.keymap.del({'n', 'v'}, 'T')
+    vim.keymap.del('', 'f')
+    vim.keymap.del('', 't')
+    vim.keymap.del('', 'F')
+    vim.keymap.del('', 'T')
 end
 
 return M
