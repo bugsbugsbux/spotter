@@ -9,7 +9,7 @@ A Neovim plugin to easily spot the targets for f/t/F/T motions!
 With lazy.nvim it looks like this:
 ```lua
 require('lazy').setup({{
-    dir = spotter,
+    'herrvonvoid/spotter',
     config = function()
         require('spotter').setup()
     end
