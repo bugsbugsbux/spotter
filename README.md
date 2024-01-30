@@ -39,7 +39,7 @@ To create custom mappings, these use-case functions are exposed:
 * `hide_on_move()` can be used in custom functions
 * `hide_on_expire()` can be used in custom functions. Passing
   `hide_on_move=true` also hides the targets on cursor movement,
-  whatever, comes first. Note, that targets are never hidden during
+  whatever comes first. Note, that targets are never hidden during
   operator pending mode.
 
 `core.lua` exposes a function to check whether targets are currently
