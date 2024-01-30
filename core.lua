@@ -63,6 +63,8 @@ function M.activate(opts)
     for _, pos in ipairs(positions) do
         highlight_char(linenr-1, pos)
     end
+
+    vim.cmd('redraw')
 end
 
 function M.deactivate(opts)
